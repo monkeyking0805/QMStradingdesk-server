@@ -1,0 +1,126 @@
+<style>
+#table-package-confirmed-assets, #table-package-confirmed-assets td {
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+#table-package-confirmed-assets th,
+#table-package-confirmed-assets td {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+</style>
+<table border="0" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td>This schedule has been confirmed:</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td><strong>Booking Name:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{bookingName}}</td>
+            </tr>
+            <tr>
+              <td><strong>Total:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+          <h3>Client Details</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td><strong>Client:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{clientName}}</td>
+            </tr>
+            <tr>
+              <td><strong>Agency:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{agencyName}}</td>
+            </tr>
+            <tr>
+              <td><strong>Brand Categories:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{brandCategories}}</td>
+            </tr>
+            <tr>
+              <td><strong>User:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{userName}}</td>
+            </tr>
+            <tr>
+              <td><strong>Status:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>Confirmed</td>
+            </tr>
+            <tr>
+              <td><strong>Notes:</strong></td>
+              <td width="32">&nbsp;</td>
+              <td>{{notes}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+          <h3>Assets</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table border="1" cellspacing="0" cellpadding="2" id="table-package-confirmed-assets" width="100%">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Date</th>
+              <th>Fixture</th>
+              <th>Stadium</th>
+              <th>Asset</th>
+              <th>QTY</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#assets}}
+            <tr>
+              <td>{{code}}</td>
+              <td>{{date}}</td>
+              <td>{{eventName}}</td>
+              <td>{{venueName}}</td>
+              <td>{{assetName}}</td>
+              <td>{{slots}}</td>
+              <td>{{duration}}</td>
+            </tr>
+            {{/assets}}
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Best regards,<br>
+QMS Sport Trading Desk

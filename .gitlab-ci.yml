@@ -1,0 +1,89 @@
+variables:
+    PROJECT: td-server
+    REGION: ap-southeast-2
+    AWS_REGION: ap-southeast-2
+    IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
+
+stages:
+    - release
+    - build
+    - deploy
+
+release:
+    stage: release
+    image: registry.gitlab.com/gomeeki/devops/ci-tools:docker
+    variables:
+        IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_TAG
+    script:
+        - sh /root/npm_build_test_push.sh
+    only:
+        - tags
+
+Build/Test:
+    stage: build
+    image: registry.gitlab.com/gomeeki/devops/ci-tools:docker
+    script:
+        - sh /root/npm_build_test.sh
+    except:
+        - develop
+        - /^release-.*$/
+        - tags
+
+Build/Test/Push:
+    stage: build
+    image: registry.gitlab.com/gomeeki/devops/ci-tools:docker
+    script:
+        - sh /root/npm_build_test_push.sh
+    only:
+        - develop
+        - /^release-.*$/
+        - master
+    except:
+        - tags
+
+deploy-production:
+    stage: deploy
+    image: registry.gitlab.com/gomeeki/devops/ci-tools:awscli
+    script:
+        - sh /root/ecs_deploy.sh
+    environment:
+        name: production
+    variables:
+        IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_TAG
+        GIT_STRATEGY: none
+        CLUSTER: qms-td-production
+        AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
+    only:
+        - tags
+
+deploy-uat:
+    stage: deploy
+    image: registry.gitlab.com/gomeeki/devops/ci-tools:awscli
+    script:
+        - sh /root/ecs_deploy.sh
+    environment:
+        name: uat
+    variables:
+        GIT_STRATEGY: none
+        CLUSTER: TD-UAT
+        AWS_ACCESS_KEY_ID: $UAT_TD_AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY: $UAT_TD_AWS_SECRET_ACCESS_KEY
+    only:
+        - /^release-.*$/
+    
+deploy-staging:
+    stage: deploy
+    image: registry.gitlab.com/gomeeki/devops/ci-tools:awscli
+    script:
+        - sh /root/ecs_deploy.sh
+    environment:
+        name: staging
+    variables:
+        REGION: us-west-2
+        GIT_STRATEGY: none
+        CLUSTER: gomeeki-staging
+        AWS_ACCESS_KEY_ID: $STAGING_AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY: $STAGING_AWS_SECRET_ACCESS_KEY
+    only: 
+        - develop

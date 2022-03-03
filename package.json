@@ -1,0 +1,66 @@
+{
+  "name": "qms-tradingdesk-server",
+  "version": "1.0.3",
+  "description": "QMS Sport Trading Desk - Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && mocha 'lib/**/*.spec.js'",
+    "coverage": "nyc mocha 'lib/**/*.spec.js'",
+    "start:production": "node index.js",
+    "start:dev": "DEBUG=qms-tradingdesk-server:* nodemon index.js",
+    "migrate:redo:prod": "node ./node_modules/.bin/knex migrate:rollback --all;node ./node_modules/.bin/knex migrate:latest;node ./node_modules/.bin/knex seed:run",
+    "migrate:redo:dev": "node ./node_modules/.bin/knex-migrate redo;node ./node_modules/.bin/knex seed:run",
+    "db:init": "source .env;export SQL_DATABASE;docker-compose exec db psql --command=\"CREATE DATABASE \\\"$SQL_DATABASE\\\";\" --host=localhost;node ./node_modules/.bin/knex migrate:latest;node ./node_modules/.bin/knex seed:run",
+    "db:drop": "source .env;export SQL_DATABASE;docker-compose exec db psql --command=\"DROP DATABASE \\\"$SQL_DATABASE\\\";\" --host=localhost"
+  },
+  "standard": {
+    "ignore": [
+      "/test/fixtures.js"
+    ]
+  },
+  "author": "Gomeeki",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "debug": "^3.2.6",
+    "dotenv": "^6.1.0",
+    "i18next": "^12.0.0",
+    "is_js": "^0.9.0",
+    "jsonwebtoken": "^8.3.0",
+    "knex": "^0.15.2",
+    "koa": "^2.6.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-heartbeat": "^0.1.2",
+    "koa-passport": "^4.1.1",
+    "koa-route-tree": "^2.4.0",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.10.0",
+    "koa-validate": "^1.0.7",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "mustache": "^3.0.1",
+    "node-validator": "^0.1.27",
+    "nodemailer": "^4.6.8",
+    "nodemailer-mandrill-transport": "^1.2.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.5.0",
+    "redis": "^2.8.0",
+    "string-similarity": "^3.0.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1",
+    "husky": "^4.2.3",
+    "knex-migrate": "^1.7.0",
+    "mocha": "^5.2.0",
+    "mockery": "^2.1.0",
+    "nodemon": "^1.18.4",
+    "nyc": "^13.3.0",
+    "rewire": "^4.0.1",
+    "sinon": "^7.0.0",
+    "sinon-chai": "^3.2.0",
+    "standard": "^11.0.1",
+    "supertest": "^3.3.0"
+  }
+}
